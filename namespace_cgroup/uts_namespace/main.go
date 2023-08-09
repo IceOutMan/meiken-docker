@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	// 指定被 fork 出的新进程的初始命令
 	cmd := exec.Command("sh")
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWUTS,

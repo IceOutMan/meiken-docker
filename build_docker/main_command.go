@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+
+	"github.com/urfave/cli"
+)
 
 var runCommand = cli.Command{
 	Name : "run",
@@ -7,7 +12,7 @@ var runCommand = cli.Command{
 	Flags : []cli.Flags{
 		cli.BoolFlag{
 			Name : "ti",
-			Usage : "enable tty"
+			Usage : "enable tty",
 		},
 	},
 	Action : func(context *cli.Context) error{

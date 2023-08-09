@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path"
 	"io/ioutil"
+	"os"
 	"os/exec"
-	"syscall"
+	"path"
 	"strconv"
+	"syscall"
 )
 
 // 挂载了memory subsystem 的 hierarchy 的目录位置
