@@ -15,7 +15,8 @@ const cgroupMemoryHierarchyMount = "/sys/fs/cgroup/memory"
 
 func main() {
 	if os.Args[0] == "/proc/self/exe" {
-				// fork出的容器进程 - 进行压测
+
+		// fork出的容器进程 - 进行压测
 		fmt.Printf("current pid %d", syscall.Getpid())
 		fmt.Println()
 		cmd := exec.Command("sh", "-c", `stress --vm-bytes 90m --vm-keep -m 1`)
@@ -31,7 +32,7 @@ func main() {
 			os.Exit(-1)
 		}
 	}
-		// 执行 - 启动当前进程的可执行文件 - go run main.go 会运行到此处
+	// 执行 - 启动当前进程的可执行文件 - go run main.go 会运行到此处
 	cmd := exec.Command("/proc/self/exe")
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWNS,
