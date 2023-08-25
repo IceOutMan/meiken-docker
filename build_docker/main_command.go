@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"com.meiken/meiken-docker/build_docker/cgroups/subsystems"
 	"com.meiken/meiken-docker/build_docker/container"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -17,6 +18,18 @@ var runCommand = cli.Command{
 			Name:  "ti",
 			Usage: "enable tty",
 		},
+		cli.StringFlag{
+			Name:  "m",
+			Usage: "memory limit",
+		},
+		cli.StringFlag{
+			Name:  "cpushare",
+			Usage: "cpushare limit",
+		},
+		cli.StringFlag{
+			Name:  "cpuset",
+			Usage: "cpuset limit",
+		},
 	},
 	Action: func(context *cli.Context) error {
 		if len(context.Args()) < 1 {
@@ -27,7 +40,12 @@ var runCommand = cli.Command{
 			cmdArray = append(cmdArray, arg)
 		}
 		tty := context.Bool("ti")
-		Run(tty, cmdArray)
+		resConf := &subsystems.ResourceConfig{
+			MemoryLimit: context.String("m"),
+			CpuSet:      context.String("cpuset"),
+			CpuShare:    context.String("cpushare"),
+		}
+		Run(tty, cmdArray, resConf)
 		return nil
 	},
 }

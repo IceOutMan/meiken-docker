@@ -4,19 +4,27 @@ import (
 	"os"
 	"strings"
 
+	"com.meiken/meiken-docker/build_docker/cgroups"
+	"com.meiken/meiken-docker/build_docker/cgroups/subsystems"
 	"com.meiken/meiken-docker/build_docker/container"
 	"github.com/sirupsen/logrus"
 )
 
-func Run(tty bool, comArry []string) {
+func Run(tty bool, comArry []string, res *subsystems.ResourceConfig) {
 	parent, writePipe := container.NewParentProcess(tty)
 	if parent == nil {
-		logrus.Errorf("New parent process error")
+		logrus.Errorf(" New parent process error")
 		return
 	}
 	if err := parent.Start(); err != nil {
 		logrus.Error(err)
 	}
+
+	cgroupManager := cgroups.NewCgroupManager("donkey-cgroup")
+	defer cgroupManager.Destroy()
+	cgroupManager.Set(res)
+	cgroupManager.Apply(parent.Process.Pid)
+
 	sendInitCommand(comArry, writePipe)
 	parent.Wait()
 	os.Exit(0)

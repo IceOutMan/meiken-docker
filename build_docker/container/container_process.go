@@ -31,6 +31,7 @@ func NewParentProcess(tty bool) (*exec.Cmd, *os.File) {
 		cmd.Stderr = os.Stderr
 	}
 	cmd.ExtraFiles = []*os.File{readPipe}
+	cmd.Dir = "/root/busybox"
 	// 新的init 进程 保留一个管道的读端
 	// 管道的写端暴露出去，相当于是 init 进程用来通过管道接收外部的命令
 	return cmd, writePipe
